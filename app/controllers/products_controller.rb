@@ -14,9 +14,13 @@ class ProductsController < ApplicationController
       name: params[:name],
       price: params[:price],
       description: params[:description],
-      image_url: params[:image_url],
+      supplier_id: params[:supplier_id],
     )
-    render :show
+    if @product.valid?
+      render :show
+    else
+      render json: { errors: @product.errors.full_messages }, status: 422
+    end
   end
 
   def update
@@ -25,9 +29,12 @@ class ProductsController < ApplicationController
       name: params[:name] || @product.name,
       price: params[:price] || @product.price,
       description: params[:description] || @product.description,
-      image_url: params[:image_url] || @product.image_url,
     )
-    render :show
+    if @product.valid?
+      render :show
+    else
+      render json: { errors: @product.errors.full_messages }, status: 422
+    end
   end
 
   def destroy
